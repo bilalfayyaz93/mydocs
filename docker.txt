@@ -1,0 +1,78 @@
+#install docker
+#install docker-compose
+
+#write Dockerfile
+eg: 
+
+FROM ruby:2.7.0
+RUN apt-get update && apt-get install -y build-essential nodejs yarn sphinxsearch
+RUN mkdir /shopping101
+COPY . /shopping101
+WORKDIR /shopping101
+RUN bundle install
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+
+# Start the main process.
+CMD ["rails", "server", "-b", "0.0.0.0"]
+
+# Start the main process.
+CMD ["rails", "server", "-b", "0.0.0.0"]
+
+#write docker-compose.yml
+
+eg:
+
+version: "3.7"
+services:
+  app:
+    image: bilalfayyaz93/shopping101:2.0
+    command: /bin/sh -c "rm -f /tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    environment:
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: shopping101_db
+      DB_HOST: mysql
+      DEV_DB_NAME: shopping101_db
+      TEST_DB_NAME: shopping101_db
+      PROD_DB_NAME: shopping101_db
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: shopping101_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+
+
+
+#docker commands
+
+
+sudo docker image build -t projectName:tag .  #create a docker image
+sudo docker images #see the available images
+sudo docker run imageID #run docker image on docker container
+sudo docker tag imageID newTag #change the tag of docker image
+sudo docker push imageID #image id should be prefixed with docker id
+docker ps #see running docker running processes
+
+docker stop imageID #stop a running image
+
+docker-compose up
+
+sudo docker exec -it ImageID /bin/bash #open the specific container console and run command in container i.e: rake ts:rebuild
+

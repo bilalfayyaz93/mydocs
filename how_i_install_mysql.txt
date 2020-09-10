@@ -1,0 +1,15 @@
+#install brew 
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+or paste/clone .linexbrew into home
+
+#install mysql
+
+brew install mysql@5.7
+brew reinstall mysql@5.7
+export PATH="/home/dev/.linuxbrew/opt/mysql@5.7/bin:$PATH"
+
+
+#install thinking sphinx
+
+sudo apt-get install sphinxsearch
+rake ts:rebuild
